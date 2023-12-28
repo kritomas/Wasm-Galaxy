@@ -7,5 +7,12 @@
 	<body>
 
 		<script type="application/javascript" src="deploy/wasm.js"></script>
+		<script>
+			Module.onRuntimeInitialized = () =>
+			{
+				sqr = Module.cwrap("csqr", "number", ["number"]);
+				document.write(sqr(7));
+			}
+		</script>
 	</body>
 </html>
