@@ -11,7 +11,7 @@
 			Module.onRuntimeInitialized = () =>
 			{
 				sqr = Module.cwrap("csqr", "number", ["number"]);
-				document.write(sqr(7));
+				console.log(sqr(7));
 			}
 		</script>
 	</body>
