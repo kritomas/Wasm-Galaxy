@@ -1,20 +1,11 @@
+#include "canvas.hpp"
 #include <iostream>
-
-int sqr(int num)
-{
-	return num * num;
-}
-
-extern "C"
-{
-int csqr(int num)
-{
-	return sqr(num);
-}
-}
 
 int main(int argc, char* argv[])
 {
-	std::cout << "Hello World!" << std::endl;
+	Canvas canvas;
+	std::string size = std::to_string(canvas.height()/10);
+	canvas.ctx.set("font", size + "px serif");
+	canvas.ctx.call<void>("fillText", (std::string)"Hello World!", 10, 100);
 	return 0;
 }

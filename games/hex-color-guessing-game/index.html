@@ -3,16 +3,11 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Wasm Galaxy - Hex Color Guessing Game</title>
+		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
+		<canvas id="ccanvas" width="1280" height="720"></canvas>
 
 		<script type="application/javascript" src="deploy/wasm.js"></script>
-		<script>
-			Module.onRuntimeInitialized = () =>
-			{
-				sqr = Module.cwrap("csqr", "number", ["number"]);
-				console.log(sqr(7));
-			}
-		</script>
 	</body>
 </html>

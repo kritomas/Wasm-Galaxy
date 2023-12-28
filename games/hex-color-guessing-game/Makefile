@@ -3,7 +3,7 @@ COMPILER=em++
 SRC=src/*.cpp
 INCLUDE=-Iinclude
 
-FLAGS=--bind -Wall -sEXPORTED_FUNCTIONS=_main,_csqr -sEXPORTED_RUNTIME_METHODS=cwrap,ccall
+FLAGS=--bind -Wall -sEXPORTED_FUNCTIONS=_main -sEXPORTED_RUNTIME_METHODS=cwrap,ccall
 
 OUTPUT=deploy/wasm.js
 
