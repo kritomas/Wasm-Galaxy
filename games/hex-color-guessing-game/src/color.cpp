@@ -8,12 +8,10 @@ std::string byteToHex(uint8_t byte)
 	uint8_t quartet = (byte & (16 | 32 | 64 | 128)) >> 4;
 	if (quartet < 10) res += ('0' + quartet);
 	else res += ('A' + quartet - 10);
-	std::cout << (int)(quartet) << " " << res << std::endl;
 
 	quartet = (byte & (1 | 2 | 4 | 8));
 	if (quartet < 10) res += ('0' + quartet);
 	else res += ('A' + quartet - 10);
-	std::cout << (int)(quartet) << " " << res << std::endl;
 
 	return res;
 }
