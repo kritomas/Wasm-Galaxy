@@ -11,8 +11,12 @@ public:
 
 	Canvas();
 
+	void init();
+
 	int width() const;
 	int height() const;
 };
+
+extern Canvas canvas;
 
 #endif
