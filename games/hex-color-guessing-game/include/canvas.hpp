@@ -15,6 +15,8 @@ public:
 
 	int width() const;
 	int height() const;
+
+	void clear();
 };
 
 extern Canvas canvas;

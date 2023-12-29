@@ -19,4 +19,9 @@ int Canvas::height() const
 	return canvas["height"].as<int>();
 }
 
+void Canvas::clear()
+{
+	ctx.call<void>("clearRect", 0, 0, width(), height());
+}
+
 Canvas canvas;

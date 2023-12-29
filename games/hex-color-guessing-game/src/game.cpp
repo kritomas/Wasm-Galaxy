@@ -1,8 +1,9 @@
 #include "game.hpp"
 #include "canvas.hpp"
+#include "jsbindings.hpp"
 #include <cstdlib>
 
-Game::Game()
+void Game::init()
 {
 	TO_BE_FOUND_FONT_SIZE = canvas.height() / 20;
 	BOX_SIZE = canvas.height() / 15;
@@ -32,6 +33,7 @@ void Game::newGame(int amount)
 
 void Game::repaint()
 {
+	canvas.clear();
 	findLabel.text = "Find " + toBeFound.toString();
 	findLabel.draw(TO_BE_FOUND_FONT_SIZE, 10, 10);
 
@@ -39,4 +41,32 @@ void Game::repaint()
 	{
 		b.draw();
 	}
+}
+
+void Game::handleClick(int x, int y)
+{
+	for (auto c : colors)
+	{
+		if (c.contains(x, y))
+		{
+			if (c.color == toBeFound)
+			{
+				newGame(5);
+				repaint();
+				break;
+			}
+		}
+	}
+}
+
+Game globalGame;
+
+extern "C"
+{
+
+void chandleClick(int x, int y)
+{
+	globalGame.handleClick(x * canvas.width() / js::window["innerWidth"].as<int>(), y * canvas.height() / js::window["innerHeight"].as<int>());
+}
+
 }

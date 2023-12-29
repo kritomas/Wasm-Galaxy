@@ -3,7 +3,7 @@ COMPILER=em++
 SRC=src/*.cpp
 INCLUDE=-Iinclude
 
-FLAGS=-lembind -Wall
+FLAGS=-lembind -Wall -sEXPORTED_FUNCTIONS=_main,_chandleClick -sEXPORTED_RUNTIME_METHODS=cwrap,ccall
 DEBUG_FLAGS=-O0 -g
 
 OUTPUT=deploy/wasm.js

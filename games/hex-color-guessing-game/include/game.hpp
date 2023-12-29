@@ -17,11 +17,22 @@ public:
 	std::vector<Box> colors;
 	Label findLabel;
 
-	Game();
+	void init();
 
 	void newGame(int amount);
 
 	void repaint();
+
+	void handleClick(int x, int y);
 };
+
+extern Game globalGame;
+
+extern "C"
+{
+
+void chandleClick(int x, int y);
+
+}
 
 #endif
