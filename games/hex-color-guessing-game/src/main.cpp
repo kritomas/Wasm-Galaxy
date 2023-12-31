@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	canvas.init();
 
 	globalGame.init();
-	globalGame.newGame(5);
+	globalGame.newGame(globalGame.difficulty());
 	globalGame.repaint();
 
 	return 0;

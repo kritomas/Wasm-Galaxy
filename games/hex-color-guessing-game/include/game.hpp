@@ -9,15 +9,22 @@
 class Game
 {
 private:
-	int TO_BE_FOUND_FONT_SIZE;
+	int TO_BE_FOUND_FONT_SIZE, DIFF_FONT_SIZE;
 	int BOX_SIZE, SPACE;
+
+	int currentDifficulty = 5;
 
 public:
 	Color toBeFound;
 	std::vector<Box> colors;
 	Label findLabel;
 
+	Label diffText;
+	std::vector<Label> difficulties;
+
 	void init();
+
+	int difficulty() const;
 
 	void newGame(int amount);
 

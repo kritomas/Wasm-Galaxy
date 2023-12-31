@@ -1,13 +1,35 @@
 #include "game.hpp"
+#include <map>
 #include "canvas.hpp"
 #include "jsbindings.hpp"
 #include <cstdlib>
 
+std::map<int, std::string> DIFFICULTIES;
+
 void Game::init()
 {
 	TO_BE_FOUND_FONT_SIZE = canvas.height() / 20;
+	DIFF_FONT_SIZE = canvas.height() / 30;
 	BOX_SIZE = canvas.height() / 15;
 	SPACE = canvas.height() / 100;
+
+	DIFFICULTIES.clear();
+	DIFFICULTIES[2] = "U colorblind?";
+	DIFFICULTIES[5] = "Normal";
+	DIFFICULTIES[20] = "How good is your vision? Yes";
+
+	diffText.text = "Difficulties:";
+	difficulties.clear();
+	for (auto& d : DIFFICULTIES)
+	{
+		difficulties.push_back(Label());
+		difficulties.back().text = d.second;
+	}
+}
+
+int Game::difficulty() const
+{
+	return currentDifficulty;
 }
 
 void Game::newGame(int amount)
@@ -41,6 +63,12 @@ void Game::repaint()
 	{
 		b.draw();
 	}
+
+	diffText.draw(DIFF_FONT_SIZE, 10, canvas.height() / 2 - diffText.measure(DIFF_FONT_SIZE).height - SPACE);
+	for (int i = 0; i < difficulties.size(); ++i)
+	{
+		difficulties[i].draw(DIFF_FONT_SIZE, 10, canvas.height() / 2 + (difficulties[i].measure(DIFF_FONT_SIZE).height + SPACE) * i);
+	}
 }
 
 void Game::handleClick(int x, int y)
@@ -51,11 +79,25 @@ void Game::handleClick(int x, int y)
 		{
 			if (c.color == toBeFound)
 			{
-				newGame(5);
+				newGame(currentDifficulty);
 				repaint();
 				break;
 			}
 		}
+	}
+	int i = 0;
+	for (auto d : DIFFICULTIES)
+	{
+		int butY = canvas.height() / 2 + (difficulties[i].measure(DIFF_FONT_SIZE).height + SPACE) * i;
+		if (y > butY && y < butY + difficulties[i].measure(DIFF_FONT_SIZE).height)
+		{
+			currentDifficulty = d.first;
+			newGame(currentDifficulty);
+			repaint();
+			break;
+		}
+
+		++i;
 	}
 }
 
