@@ -22,6 +22,8 @@ public:
 	Label diffText;
 	std::vector<Label> difficulties;
 
+	Label wrongText;
+
 	void init();
 
 	int difficulty() const;

@@ -51,6 +51,8 @@ void Game::newGame(int amount)
 		colors[i].h = BOX_SIZE;
 	}
 	colors[rand() % colors.size()].color = toBeFound;
+
+	wrongText.text = "";
 }
 
 void Game::repaint()
@@ -69,6 +71,8 @@ void Game::repaint()
 	{
 		difficulties[i].draw(DIFF_FONT_SIZE, 10, canvas.height() / 2 + (difficulties[i].measure(DIFF_FONT_SIZE).height + SPACE) * i);
 	}
+
+	wrongText.draw(DIFF_FONT_SIZE, 10, canvas.height() / 3);
 }
 
 void Game::handleClick(int x, int y)
@@ -80,6 +84,12 @@ void Game::handleClick(int x, int y)
 			if (c.color == toBeFound)
 			{
 				newGame(currentDifficulty);
+				repaint();
+				break;
+			}
+			else
+			{
+				wrongText.text = "Nope, that's " + c.color.toString();
 				repaint();
 				break;
 			}
