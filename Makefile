@@ -4,10 +4,12 @@ all : games
 	cd games
 	cd hex-color-guessing-game
 	make all
-	cd ..
+	cd ../tic-tac-toe
+	make all
 
 debug : games
 	cd games
 	cd hex-color-guessing-game
 	make debug
-	cd ..
+	cd ../tic-tac-toe
+	make debug
