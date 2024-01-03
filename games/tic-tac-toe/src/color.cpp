@@ -16,6 +16,16 @@ std::string byteToHex(uint8_t byte)
 	return res;
 }
 
+Color::Color()
+{
+}
+Color::Color(uint8_t red, uint8_t green, uint8_t blue)
+{
+	r = red;
+	g = green;
+	b = blue;
+}
+
 std::string Color::toString() const
 {
 	std::string res = "#";
