@@ -24,7 +24,9 @@ void Game::init(int width, int height)
 	}
 
 	BOX_SIZE = canvas.height() / (1.5 * h);
-	SPACE = canvas.height() / (6 * h);
+	SPACE = canvas.height() / (10 * h);
+
+	X_START = 10, Y_START = 10;
 
 	repaint();
 }
@@ -40,20 +42,40 @@ void Game::repaint()
 	canvas.clear();
 
 	canvas.ctx.set("fillStyle", Color(0, 0, 0).toString());
-	canvas.ctx.call<void>("fillRect", 0, 0,  w * (BOX_SIZE + SPACE), h * (BOX_SIZE + SPACE));
+	canvas.ctx.call<void>("fillRect", X_START - SPACE, Y_START - SPACE,  w * (BOX_SIZE + SPACE) + SPACE, h * (BOX_SIZE + SPACE) + SPACE);
 	for (int x = 0; x < w; ++x)
 	{
 		for (int y = 0; y < h; ++y)
 		{
 			canvas.ctx.set("fillStyle", playerColors[*tileAt(x, y)].toString());
-			canvas.ctx.call<void>("fillRect", x * (BOX_SIZE + SPACE), y * (BOX_SIZE + SPACE), BOX_SIZE, BOX_SIZE);
+			canvas.ctx.call<void>("fillRect", x * (BOX_SIZE + SPACE) + X_START, y * (BOX_SIZE + SPACE) + Y_START, BOX_SIZE, BOX_SIZE);
 		}
 	}
 }
 
+void Game::nextTurn()
+{
+	currentPlayer = (currentPlayer + 1) % PLAYERS;
+}
+
 void Game::handleClick(int x, int y)
 {
-	//TODO
+	x -= X_START;
+	y -= Y_START;
+
+	x /= (BOX_SIZE + SPACE);
+	y /= (BOX_SIZE + SPACE);
+
+	int* clicked = tileAt(x, y);
+	if (clicked != nullptr)
+	{
+		if (*clicked == NONE)
+		{
+			*clicked = currentPlayer;
+			nextTurn();
+			repaint();
+		}
+	}
 }
 
 Game globalGame;
