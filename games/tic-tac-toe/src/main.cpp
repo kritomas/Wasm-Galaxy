@@ -8,6 +8,7 @@
 int main(int argc, char* argv[])
 {
 	canvas.init();
+	initPlayerColors();
 
 	globalGame.init(20, 20);
 
