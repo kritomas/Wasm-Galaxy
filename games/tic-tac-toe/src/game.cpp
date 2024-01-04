@@ -3,13 +3,7 @@
 #include "canvas.hpp"
 #include <iostream>
 
-std::unordered_map<int, Color> playerColors;
-void initPlayerColors()
-{
-	playerColors[NONE] = Color(255, 255, 255);
-	playerColors[X] = Color(255, 0, 0);
-	playerColors[O] = Color(0, 0, 255);
-}
+const int VICTORY_LENGTH = 5;
 
 void Game::init(int width, int height)
 {
@@ -18,20 +12,28 @@ void Game::init(int width, int height)
 
 	grid.resize(w * h);
 
-	for (int i = 0; i < w * h; ++i)
-	{
-		grid[i] = NONE;
-	}
-
 	BOX_SIZE = canvas.height() / (1.5 * h);
 	SPACE = canvas.height() / (10 * h);
 
 	X_START = 10, Y_START = 10;
 
+	for (int x = 0; x < w; ++x)
+	{
+		for (int y = 0; y < h; ++y)
+		{
+			Box* b = tileAt(x, y);
+			b->player = NONE;
+			b->x = x * (BOX_SIZE + SPACE) + X_START;
+			b->y = y * (BOX_SIZE + SPACE) + Y_START;
+			b->w = BOX_SIZE;
+			b->h = BOX_SIZE;
+		}
+	}
+
 	repaint();
 }
 
-int* Game::tileAt(int x, int y)
+Box* Game::tileAt(int x, int y)
 {
 	if (x < 0 || x >= w || y < 0 || y >= h) return nullptr;
 	return &grid[x * h + y];
@@ -47,8 +49,7 @@ void Game::repaint()
 	{
 		for (int y = 0; y < h; ++y)
 		{
-			canvas.ctx.set("fillStyle", playerColors[*tileAt(x, y)].toString());
-			canvas.ctx.call<void>("fillRect", x * (BOX_SIZE + SPACE) + X_START, y * (BOX_SIZE + SPACE) + Y_START, BOX_SIZE, BOX_SIZE);
+			tileAt(x, y)->draw();
 		}
 	}
 }
@@ -66,12 +67,12 @@ void Game::handleClick(int x, int y)
 	x /= (BOX_SIZE + SPACE);
 	y /= (BOX_SIZE + SPACE);
 
-	int* clicked = tileAt(x, y);
+	Box* clicked = tileAt(x, y);
 	if (clicked != nullptr)
 	{
-		if (*clicked == NONE)
+		if (clicked->player == NONE)
 		{
-			*clicked = currentPlayer;
+			clicked->player = currentPlayer;
 			nextTurn();
 			repaint();
 		}

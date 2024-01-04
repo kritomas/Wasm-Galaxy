@@ -4,11 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include "color.hpp"
-
-enum Players { NONE = -1, X = 0, O = 1,   PLAYERS = 2 };
-
-extern std::unordered_map<int, Color> playerColors;
-void initPlayerColors();
+#include "box.hpp"
 
 class Game
 {
@@ -16,7 +12,7 @@ private:
 	int SPACE, BOX_SIZE;
 	int X_START, Y_START;
 
-	std::vector<int> grid;
+	std::vector<Box> grid;
 	int w = -1, h = -1;
 
 	int currentPlayer = 0;
@@ -24,7 +20,7 @@ private:
 public:
 	void init(int width, int height);
 
-	int* tileAt(int x, int y);
+	Box* tileAt(int x, int y);
 
 	void repaint();
 
