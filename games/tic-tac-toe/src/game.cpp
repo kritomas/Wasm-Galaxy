@@ -5,6 +5,29 @@
 
 const int VICTORY_LENGTH = 5;
 
+std::unordered_map<int, int> xSeeks, ySeeks;
+void initLookupTables()
+{
+	xSeeks[0] = 1;
+	xSeeks[1] = 1;
+	xSeeks[2] = 1;
+	xSeeks[3] = 0;
+	xSeeks[4] = -1;
+	xSeeks[5] = -1;
+	xSeeks[6] = -1;
+	xSeeks[7] = 0;
+
+	ySeeks[0] = -1;
+	ySeeks[1] = 0;
+	ySeeks[2] = 1;
+	ySeeks[3] = 1;
+	ySeeks[4] = 1;
+	ySeeks[5] = 0;
+	ySeeks[6] = -1;
+	ySeeks[7] = -1;
+}
+const int DIRECTIONS = 8;
+
 void Game::init(int width, int height)
 {
 	w = width;
@@ -54,6 +77,36 @@ void Game::repaint()
 	}
 }
 
+int Game::checkVictory(const int x, const int y)
+{
+	for (int d = 0; d < DIRECTIONS; ++d)
+	{
+		int count = 1;
+		Box* start = tileAt(x, y);
+		int distance = 1;
+		Box* current = tileAt(x + xSeeks[d] * distance, y + ySeeks[d] * distance);
+		while (current != nullptr && current->player == start->player)
+		{
+			++count;
+			++distance;
+			current = tileAt(x + xSeeks[d] * distance, y + ySeeks[d] * distance);
+		}
+		distance = 1;
+		current = tileAt(x - xSeeks[d] * distance, y - ySeeks[d] * distance);
+		while (current != nullptr && current->player == start->player)
+		{
+			++count;
+			++distance;
+			current = tileAt(x - xSeeks[d] * distance, y - ySeeks[d] * distance);
+		}
+		if (count >= VICTORY_LENGTH)
+		{
+			return start->player;
+		}
+	}
+	return NONE;
+}
+
 void Game::nextTurn()
 {
 	currentPlayer = (currentPlayer + 1) % PLAYERS;
@@ -61,20 +114,25 @@ void Game::nextTurn()
 
 void Game::handleClick(int x, int y)
 {
-	x -= X_START;
-	y -= Y_START;
-
-	x /= (BOX_SIZE + SPACE);
-	y /= (BOX_SIZE + SPACE);
-
-	Box* clicked = tileAt(x, y);
-	if (clicked != nullptr)
+	if (winningPlayer == NONE)
 	{
-		if (clicked->player == NONE)
+		x -= X_START;
+		y -= Y_START;
+
+		x /= (BOX_SIZE + SPACE);
+		y /= (BOX_SIZE + SPACE);
+
+		Box* clicked = tileAt(x, y);
+		if (clicked != nullptr)
 		{
-			clicked->player = currentPlayer;
-			nextTurn();
-			repaint();
+			if (clicked->player == NONE)
+			{
+				clicked->player = currentPlayer;
+				winningPlayer = checkVictory(x, y);
+				if (winningPlayer != NONE) std::cout << winningPlayer << " won." << std::endl;
+				nextTurn();
+				repaint();
+			}
 		}
 	}
 }

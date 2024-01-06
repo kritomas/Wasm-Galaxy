@@ -6,6 +6,9 @@
 #include "color.hpp"
 #include "box.hpp"
 
+extern std::unordered_map<int, int> xSeeks, ySeeks;
+void initLookupTables();
+
 class Game
 {
 private:
@@ -16,6 +19,7 @@ private:
 	int w = -1, h = -1;
 
 	int currentPlayer = 0;
+	int winningPlayer = NONE;
 
 public:
 	void init(int width, int height);
@@ -23,6 +27,8 @@ public:
 	Box* tileAt(int x, int y);
 
 	void repaint();
+
+	int checkVictory(const int x, const int y);
 
 	void nextTurn();
 
