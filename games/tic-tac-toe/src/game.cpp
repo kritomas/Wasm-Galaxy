@@ -1,7 +1,10 @@
 #include "game.hpp"
+#include "box.hpp"
 #include "jsbindings.hpp"
 #include "canvas.hpp"
 #include <iostream>
+
+const int DEFAULT_WIDTH = 20, DEFAULT_HEIGHT = 20;
 
 const int VICTORY_LENGTH = 5;
 
@@ -52,6 +55,29 @@ void Game::init(int width, int height)
 			b->h = BOX_SIZE;
 		}
 	}
+	blackout.x = X_START - SPACE;
+	blackout.y = Y_START - SPACE;
+	blackout.w = w * (BOX_SIZE + SPACE) + SPACE;
+	blackout.h = h * (BOX_SIZE + SPACE) + SPACE;
+	blackout.player = BACKGROUND;
+
+	victoryBox.x = blackout.x + blackout.w + SPACE * 3;
+	victoryBox.y = blackout.y;
+	victoryBox.w = BOX_SIZE;
+	victoryBox.h = BOX_SIZE;
+
+	victory.text = " won";
+
+	newGameButton.x = victoryBox.x;
+	newGameButton.y = victoryBox.y + victoryBox.h + SPACE * 3;
+	newGameButton.w = victoryBox.w;
+	newGameButton.h = victoryBox.h;
+	newGameButton.player = NEWGAME;
+
+	newGame.text = " <--- New Game";
+
+	currentPlayer = 0;
+	victoryBox.player = NONE;
 
 	repaint();
 }
@@ -66,8 +92,7 @@ void Game::repaint()
 {
 	canvas.clear();
 
-	canvas.ctx.set("fillStyle", Color(0, 0, 0).toString());
-	canvas.ctx.call<void>("fillRect", X_START - SPACE, Y_START - SPACE,  w * (BOX_SIZE + SPACE) + SPACE, h * (BOX_SIZE + SPACE) + SPACE);
+	blackout.draw();
 	for (int x = 0; x < w; ++x)
 	{
 		for (int y = 0; y < h; ++y)
@@ -75,6 +100,14 @@ void Game::repaint()
 			tileAt(x, y)->draw();
 		}
 	}
+
+	if (victoryBox.player != NONE)
+	{
+		victoryBox.draw();
+		victory.draw(BOX_SIZE, victoryBox.x + victoryBox.w, victoryBox.y);
+	}
+	newGameButton.draw();
+	newGame.draw(BOX_SIZE, newGameButton.x + newGameButton.w, newGameButton.y);
 }
 
 int Game::checkVictory(const int x, const int y)
@@ -114,7 +147,13 @@ void Game::nextTurn()
 
 void Game::handleClick(int x, int y)
 {
-	if (winningPlayer == NONE)
+	if (newGameButton.contains(x, y))
+	{
+		init(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		return;
+	}
+
+	if (victoryBox.player == NONE)
 	{
 		x -= X_START;
 		y -= Y_START;
@@ -128,8 +167,7 @@ void Game::handleClick(int x, int y)
 			if (clicked->player == NONE)
 			{
 				clicked->player = currentPlayer;
-				winningPlayer = checkVictory(x, y);
-				if (winningPlayer != NONE) std::cout << winningPlayer << " won." << std::endl;
+				victoryBox.player = checkVictory(x, y);
 				nextTurn();
 				repaint();
 			}

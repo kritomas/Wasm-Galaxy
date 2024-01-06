@@ -7,6 +7,8 @@ void initPlayerColors()
 	playerColors[NONE] = Color(255, 255, 255);
 	playerColors[X] = Color(255, 0, 0);
 	playerColors[O] = Color(0, 0, 255);
+	playerColors[BACKGROUND] = Color(0, 0, 0);
+	playerColors[NEWGAME] = Color(0, 255, 0);
 }
 
 void Box::draw()

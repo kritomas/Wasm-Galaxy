@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	initPlayerColors();
 	initLookupTables();
 
-	globalGame.init(20, 20);
+	globalGame.init(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
 	return 0;
 }

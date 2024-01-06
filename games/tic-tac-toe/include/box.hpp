@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include "color.hpp"
 
-enum Players { NONE = -1, X = 0, O = 1,   PLAYERS = 2 };
+enum Players { NONE = -1, X = 0, O = 1,   PLAYERS = 2,    BACKGROUND = -2, NEWGAME = -3 };
 
 extern std::unordered_map<int, Color> playerColors;
 void initPlayerColors();
