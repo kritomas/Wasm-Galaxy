@@ -1,6 +1,6 @@
 Module.onRuntimeInitialized = () =>
 {
-	handleClick = Module.cwrap("chandleClick", "undefined", ["number", "number"]);
+	const handleClick = Module.cwrap("chandleClick", "undefined", ["number", "number"]);
 
 	const canvas = document.getElementById("ccanvas");
 	canvas.addEventListener("click", (e) =>
