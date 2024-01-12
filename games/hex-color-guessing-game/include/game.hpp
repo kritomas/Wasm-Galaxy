@@ -24,10 +24,21 @@ public:
 
 	Label wrongText;
 
+	/**
+	 * Initializes the game.
+	 */
 	void init();
 
+	/**
+	 * @return The amount of colors to guess.
+	 */
 	int difficulty() const;
 
+	/**
+	 * Starts a new game.
+	 *
+	 * @param amount The amount of colors to guess.
+	 */
 	void newGame(int amount);
 
 	void repaint();

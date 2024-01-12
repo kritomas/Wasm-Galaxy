@@ -31,12 +31,21 @@ private:
 	Label newGame;
 
 public:
+	/**
+	 * Starts a new game.
+	 */
 	void init(int width, int height);
 
+	/**
+	 * @return The tile at the specified coordinates, or nullptr if out of bounds.
+	 */
 	Box* tileAt(int x, int y);
 
 	void repaint();
 
+	/**
+	 * @return The player, that won at the specified coordinates, or NONE, if no one has won yet.
+	 */
 	int checkVictory(const int x, const int y);
 
 	void nextTurn();
